@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    PROJECT_ID = 'open-source-442205' //
+    PROJECT_ID = 'open-source-442205' 
     CLUSTER_NAME = 'k8s'
     LOCATION = 'asia-northeast3-a'
     CREDENTIALS_ID = 'gke'
