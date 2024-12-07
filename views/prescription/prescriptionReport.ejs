@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<div class="section-record">
+    <div class="record-title">
+        <h1>복용약 기록</h1>
+        <button onclick="openPopupReport()">기록 추가</button>
+    </div>
+
+    <div class="record-list" id="consumption-list">
+
+        <!-- 복용 기록 목록 -->
+        <div class="prescription-list-content">
+            <% for(var i = 0; i<prescriptionReport.length; i++){ %>
+            <div class="record-object" onclick="openPopupReportEdit(
+                '<%= prescriptionReport[i].prescription.prescription_name %>',
+                '<%= prescriptionReport[i].prescription_report_date %>',
+                '<%= prescriptionReport[i].prescription_report_time %>',
+                '<%= prescriptionReport[i].prescription_report_id %>',
+                '<%= prescriptionReport[i].prescription.prescription_amount %>')">
+                    <h1><%= prescriptionReport[i].prescription.prescription_name %></h1>
+                <hr>
+                <div>
+                    <div style="margin: 0;">
+                        <div style="margin: 0 10rem auto auto;">
+                            <p><b>복용 일자</b></p>
+                            <p><%= prescriptionReport[i].prescription_report_date %></p>
+                        </div>
+                        <div style="margin: 0;">
+                            <p><b>복용 시간</b></p>
+                            <p><%= prescriptionReport[i].prescription_report_time %></p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p><b>현재 복용량</b></p>
+                    <p><%= prescriptionReport[i].prescription.prescription_amount %> mg</p>
+                </div>
+            </div>
+            <% } %>
+        </div>
+
+    </div>
+
+    <!-- 기록 추가 팝업창 -->
+    <div id="popupReport" class="popup-record">
+        <div class="record-form" id="report-list">
+            <h1>복용 기록 추가</h1>
+            <form id="add-prescription-report-form">
+                <select id="report-select">
+                    <option>처방약 선택</option>
+                    <% for(var i = 0; i < prescriptionContent.length;i++) { %>
+                        <option value="<%= prescriptionContent[i].prescription_id %>"><%= prescriptionContent[i].prescription_name %>&nbsp;&nbsp;&nbsp;<%= prescriptionContent[i].prescription_date %></option>}
+                    <% } %>
+                </select>
+                <input type="date" id="report-date" placeholder="복용 날짜">
+                <input type="time" id="report-time" placeholder="복용 시간">
+                <button type="submit" class="add-button">추가</button>
+                <span class="close-btn-record" onclick="closePopupReport()">닫기</span>
+            </form>
+        </div>            
+    </div>
+
+
+    <!-- 기록 수정 팝업창 -->
+    <div id="popupReportEdit" class="popup-edit">
+        <div class="edit-form" id="edit-list">
+            <h1>복용 기록 수정</h1>
+            <form id="edit-prescription-report-form">
+                <input type="text" id="edit-prescription-name" disabled>
+                <input type="date" id="edit-report-date" placeholder="복용 날짜">
+                <input type="time" id="edit-report-time" placeholder="복용 시간">
+                <button type="submit" class="add-button-edit">수정</button>
+                <span class="close-btn-delete" id="delete-report">삭제</span>
+                <span class="close-btn-edit" onclick="closePopupReportEdit()">닫기</span>
+                <input type="text" id="reportID" style="display: none;">
+            </form>
+        </div>            
+    </div>
+    
+</div>
+
+<script>
+    // 복용 기록 추가
+    function openPopupReport() {
+		var popup = document.getElementById("popupReport");
+		popup.style.visibility = "visible";
+		popup.style.opacity = "1";
+	}
+
+	function closePopupReport() {
+		var popup = document.getElementById("popupReport");
+		popup.style.visibility = "hidden";
+		popup.style.opacity = "0";
+	}
+
+    document.getElementById('add-prescription-report-form').addEventListener('submit', function(event) {
+        //event.preventDefault(); 
+        addReport();
+    });
+
+    function addReport() {
+        const date = document.getElementById('report-date').value;
+        const time = document.getElementById('report-time').value;
+        const prescriptionID = document.getElementById('report-select').value;
+        
+        const token = localStorage.getItem('token');
+        fetch('/prescription/report', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ date, time, prescriptionID }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status) {
+                alert('복용 기록이 성공적으로 추가되었습니다.');
+                window.reload();
+                closePopupReport();
+            } else {
+                alert('복용 기록 추가에 실패했습니다.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        
+        });
+
+        return true; // 폼 제출
+    }
+
+    // 복용 기록 수정
+    function openPopupReportEdit(name, date, time, reportID, amount) {
+        var popup = document.getElementById("popupReportEdit");
+        document.getElementById("edit-prescription-name").value = name;
+        document.getElementById("edit-report-date").value = date;
+        document.getElementById("edit-report-time").value = time;
+        document.getElementById("reportID").value = reportID;
+        popup.style.visibility = "visible";
+        popup.style.opacity = "1";
+    }
+
+	function closePopupReportEdit() {
+		var popup = document.getElementById("popupReportEdit");
+		popup.style.visibility = "hidden";
+		popup.style.opacity = "0";
+	}
+
+    document.getElementById('edit-prescription-report-form').addEventListener('submit', function(event) {
+        //event.preventDefault(); 
+        editReport();
+    });
+
+    function editReport() {
+        const date = document.getElementById('edit-report-date').value;
+        const time = document.getElementById('edit-report-time').value;
+        const reportID = document.getElementById('reportID').value;
+        
+        fetch(`/prescription/reportEdit/${reportID}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ date, time }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status) {
+                alert('복용 기록이 성공적으로 수정되었습니다.');
+                window.reload();
+                closePopupReportEdit();
+            } else {
+                alert('복용 기록 수정에 실패했습니다.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            
+        });
+
+        return true; // 폼 제출
+    }
+
+    // 복용 기록 삭제
+    document.getElementById('delete-report').addEventListener('click', function(event) {
+        //event.preventDefault(); 
+        deleteReport();
+    });
+
+    function deleteReport() {
+        const reportID = document.getElementById('reportID').value;
+        
+        fetch(`/prescription/reportDelete/${reportID}`, {
+            method: 'DELETE',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status) {
+                alert('복용 기록이 성공적으로 삭제되었습니다.');
+                window.reload();
+                closePopupReportEdit();
+            } else {
+                alert('복용 기록 삭제에 실패했습니다.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            
+        });
+
+        return true; // 폼 제출
+    }
+ 
+
+</script>

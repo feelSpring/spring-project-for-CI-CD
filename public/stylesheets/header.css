@@ -1,0 +1,94 @@
+/* Rectangle 18 */
+
+.header-login {
+    position: absolute;
+    width: 100%;
+    height: 7.4rem;
+    left: 0rem;
+    top: 0rem;
+
+    background: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 7.7rem;
+}
+
+
+/* 로그인 */
+
+.login {
+    display:inline-block; 
+    height: 28px;
+
+    font-style: Bold;
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 2.8rem;
+
+    color: #777876;
+    font-family: 'worksans-italic';
+}
+
+
+/* 회원 정보 수정 */
+
+.join {
+    display:inline-block; 
+    height: 28px;
+    margin-right: 5.7rem;
+    font-style: Bold;
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 2.8rem;
+
+    color: #777876;
+    font-family: 'worksans-italic';
+}
+
+.logout {
+    display:inline-block; 
+    height: 28px;
+    margin-right: 5.7rem;
+    font-style: Bold;
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 2.8rem;
+
+    color: #777876;
+    font-family: 'worksans-italic';
+}
+
+.login a {
+    text-decoration: none;
+    font-style: Bold;
+    font-weight: 700;
+    font-size: 3.2rem;
+    line-height: 2.8rem;
+
+    color: #180565;
+    font-family: 'cafe24';
+}
+
+.join a {
+    text-decoration: none;
+    font-style: Bold;
+    font-weight: 700;
+    font-size: 3.2rem;
+    line-height: 2.8rem;
+
+    color: #180565;
+    font-family: 'cafe24';
+}
+
+.logout a {
+    text-decoration: none;
+    font-style: Bold;
+    font-weight: 700;
+    font-size: 3.2rem;
+    line-height: 2.8rem;
+
+    color: #180565;
+    font-family: 'cafe24';
+}

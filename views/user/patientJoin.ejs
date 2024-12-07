@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<link href="/stylesheets/users/user.css" rel="stylesheet">
+<link href="/stylesheets/style.css" rel="stylesheet">
+<%-include('../header.ejs') %>
+
+<body class = "user-background">
+  <div class = "user">
+      <img class = "logo" src="/images/spring_logo.jpg">
+
+    <a href="/user/join/patient" class = "join-selected-button left">환자</a>
+    <a href="/user/join/doctor" class = "join-non-selected-button right">의사</a>
+
+      <form id="join-form" class="form">
+        <div>
+            <div class = "text">
+                <b>성명</b>
+            </div>
+            <input type = "text" name = "name" class = "text_input" required>
+
+            <div class = "text">
+                <b>이메일</b>
+            </div>
+
+          <div class="email-submit-form">
+            <div class="email-form-inline">
+              <input type="text" name="email" class = "text_input" required>
+            </div>
+  
+            <div class="button-form-inline">
+              <input type="button" value="중복 확인" id="check-email-button" class = "button-checking-email">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class = "text">
+            <b>비밀번호</b>
+          </div>
+          <input type = "password" name = "password" class = "text_input" required>
+        </div>
+
+        <div>
+          <div class = "text">
+            <b>비밀번호 확인</b>
+          </div>
+          <input type = "password" name = "passwordCheck" class = "text_input" required>
+        </div>
+
+        <div>
+          <input type="submit" class="submit" value="회원가입" class = "text_input">
+        </div>
+
+      </form>
+  </div>
+  <script>
+    document.getElementById('check-email-button').addEventListener('click', async function() {
+      const email = document.querySelector('input[name="email"]').value;
+
+      if (!email) {
+        alert('이메일을 입력해주세요.');
+        return;
+      }
+      
+      try {
+        const response = await fetch('/user/join/emailChecking', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email })
+        });
+
+        if (response.status === 200) {
+          const data = await response.json();
+          alert(`${data.message}`);
+        }
+        else if (response.status === 404) {
+          const error = await response.json();
+          alert(`${error.message}`);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert(`${error.message}`);
+      }
+    });
+
+
+
+    document.getElementById('join-form').addEventListener('submit', async function(event) {
+      event.preventDefault();  // Prevent default form submission
+
+      const form = event.target;
+      const formData = new FormData(form);
+
+      const name = formData.get('name');
+      const email = formData.get('email');
+      const password = formData.get('password');
+      const passwordCheck = formData.get('passwordCheck');
+
+      try {
+        const response = await fetch('/user/join/patient', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password, passwordCheck })  // Send data as JSON
+        });
+
+        if (response.status === 200) {
+          const data = await response.json();
+          alert(`${data.message}`);
+          window.location.href = '/user/login';
+        }
+        else if (response.status === 409) {
+          const error = await response.json();
+          alert(`${error.message}`);
+        }
+        else {
+          const error = await response.json();
+          alert(`${error.message}`);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert(`${error.message}`);
+      }
+    });
+  </script>
+
+  </body>
+</html>

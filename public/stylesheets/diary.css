@@ -1,0 +1,148 @@
+.diaryContainer {
+    position: relative;
+    top: 20rem;
+}
+
+.diary-entry {
+    display: flex;
+    margin-top: 6rem;
+    flex-direction: row;
+    gap: 4.6rem;
+    justify-content: center;
+    align-self: center;
+}
+
+.photo {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.photo-frame {
+    position: relative;
+    align-items: center;
+    width: 70rem;
+    height: 60rem;
+    margin-top: 2rem;
+    background-color: #f0f0f0;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+#diary-text{
+    padding: 2rem;
+    font-size: 3rem;
+}
+
+.photo-of-the-day {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+.photo-button {
+    background-color: #1f0075;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 6rem;
+    height: 6rem;
+    font-size: 1.5em;
+    line-height: 1;
+    cursor: pointer;
+    margin-top: 1rem;
+    font-size: 4rem;
+}
+
+
+.entry {
+    width: 120rem;
+    height: 80rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.entry label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.entry-inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.entry input[type="date"],
+.entry input[type="text"] {
+    flex: 1;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+    border: 0.1rem solid #f0f0f0;
+    border-radius: 0.5rem;
+    width: 25rem;
+    height: 4.3rem;
+    font-size: 2rem;
+}
+
+
+
+
+.entry textarea {
+    width: 100%;
+    height: 60rem;
+    padding: 1rem;
+    font-size: 1em;
+    background-color: #f0f0f0;
+    border: 1px solid #f0f0f0;
+    border-radius: 1rem;
+    box-sizing: border-box;
+    resize: none;
+
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    font-size: 2rem;
+}
+
+.buttons button {
+    padding: 1rem 2rem;
+    margin-left: 1rem;
+    font-size: 1em;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.save-button {
+    background-color: #1f0075;
+    color: #ffffff;
+    width: 12rem;
+    height: 5rem;
+}
+
+.all-entries {
+    margin-top: 4rem;
+}
+
+.calendar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calendar input[type="date"] {
+    padding: 0.8rem;
+    margin-right: 1rem;
+    font-size: 1em;
+}

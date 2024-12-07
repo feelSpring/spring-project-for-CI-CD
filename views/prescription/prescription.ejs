@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring!</title>
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="/stylesheets/prescription.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <%-include('../header.ejs') %>
+    <%-include('../menu.ejs') %>
+</head>
+<body>
+    
+    <div class="view-container">
+        <!-- <%-include('prescriptionCalendar') %> -->
+        <%-include('prescriptionChart', {chart: chart}) %>
+    </div> 
+    
+    <div class="prescription-container">
+        <%-include('prescriptionContent', {prescriptionContent: prescriptionContent}) %>
+        <%-include('prescriptionReport', {prescriptionContent: prescriptionContent, prescriptionReport: prescriptionReport}) %>
+    </div>
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() 
+    {
+        const token = localStorage.getItem('token');
+        if (token) {
+            fetch('/prescription/refresh', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // refresh 요청이 성공하면 '/' 경로로 재요청
+                    fetch('/prescription')
+                } else {
+                    alert('새로고침을 눌러주세요');
+                    throw new Error('Failed to authenticate token');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        else {
+            console.log('Token does not exist in localStorage');
+            window.location.href = '/user/login';
+        }
+    })
+
+    
+</script>
+</html>

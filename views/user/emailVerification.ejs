@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<link href="/stylesheets/users/user.css" rel="stylesheet">
+<link href="/stylesheets/style.css" rel="stylesheet">
+<%-include('../header.ejs') %>
+
+
+  <body class = "user-background">
+    <div class = "user">
+        <img class = "logo" src="/images/spring_logo.jpg">
+
+        <form id="emailVerification-form" class = "form">
+          <div>
+            <div class = "text">
+              <b>이메일</b>
+            </div>
+
+            <div>
+              <input type = "text" name = "email" class = "text_input" required>
+            </div>
+
+          </div>
+          <br>
+          <br>
+          <br>
+          <br>
+
+          <div>
+            <input class="button" type="submit" value="전송">
+          </div>
+        </form>
+
+    </div>
+
+    <script>
+      document.getElementById('emailVerification-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+        const email = formData.get('email');
+        
+        try {
+          const response = await fetch('/user/password/emailVarificaiton', {
+            method: 'POST',
+            headers: {
+              'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({email})
+          }); 
+
+          if (response.status == 200) {
+            const data = await response.json();
+            alert(`${data.message}`);
+            window.location.href = '/user/login';
+          }
+          else if (response.status == 404) {
+            const data = await response.json();
+            alert(`${data.message}`);
+          }
+        } catch (error) {
+          alert(`${error.message}`);
+        }
+      });
+    </script>
+
+  </body>
+</html>
